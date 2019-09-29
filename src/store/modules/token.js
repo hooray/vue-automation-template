@@ -25,19 +25,12 @@ const actions = {
         commit
     }, data) {
         return new Promise((resolve, reject) => {
-            // 模拟登录成功，写入 token 信息
-            commit('setData', {
-                token: '1234567890',
-                failuretime: Date.parse(new Date()) / 1000 + 24 * 60 * 60
+            api.post('member/login', data).then(res => {
+                commit('setData', res.data)
+                resolve(res)
+            }).catch(error => {
+                reject(error)
             })
-            resolve()
-
-            // api.post('member/login', data).then(res => {
-            // 	commit('setData', res.data);
-            // 	resolve(res);
-            // }).catch((error) => {
-            // 	reject(error);
-            // });
         })
     }
 }

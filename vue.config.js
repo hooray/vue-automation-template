@@ -9,31 +9,31 @@ module.exports = {
         },
         plugins: [
             // 如果有多个目录需要生成多张精灵图，则需要创建多个 SpritesmithPlugin() 实例
-            new SpritesmithPlugin({
-                src: {
-                    cwd: path.resolve(__dirname, 'src/assets/sprites/example'),
-                    glob: '*.png'
-                },
-                target: {
-                    image: path.resolve(__dirname, 'src/assets/sprites/example.[hash].png'),
-                    css: [
-                        [path.resolve(__dirname, 'src/assets/sprites/_example.scss'), {
-                            format: 'handlebars_based_template',
-                            spritesheetName: 'example'
-                        }]
-                    ]
-                },
-                customTemplates: {
-                    'handlebars_based_template': path.resolve(__dirname, 'scss.template.handlebars')
-                },
-                apiOptions: {
-                    cssImageRef: '~example.[hash].png'
-                },
-                spritesmithOptions: {
-                    algorithm: 'binary-tree',
-                    padding: 10
-                }
-            })
+            // new SpritesmithPlugin({
+            //     src: {
+            //         cwd: path.resolve(__dirname, 'src/assets/sprites/example'),
+            //         glob: '*.png'
+            //     },
+            //     target: {
+            //         image: path.resolve(__dirname, 'src/assets/sprites/example.[hash].png'),
+            //         css: [
+            //             [path.resolve(__dirname, 'src/assets/sprites/_example.scss'), {
+            //                 format: 'handlebars_based_template',
+            //                 spritesheetName: 'example'
+            //             }]
+            //         ]
+            //     },
+            //     customTemplates: {
+            //         'handlebars_based_template': path.resolve(__dirname, 'scss.template.handlebars')
+            //     },
+            //     apiOptions: {
+            //         cssImageRef: '~example.[hash].png'
+            //     },
+            //     spritesmithOptions: {
+            //         algorithm: 'binary-tree',
+            //         padding: 10
+            //     }
+            // })
         ]
     },
     chainWebpack: config => {

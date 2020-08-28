@@ -1,21 +1,15 @@
 <template>
     <div>
-        {{#if isLayout}}
-        <!-- 布局页面：{{ properCase name }} -->
-        <RouterView />
-        {{else}}
-        <!-- 页面：{{ properCase name }} -->
-        {{/if}}
+        页面内容区域
     </div>
 </template>
 
 <script>
 export default {
-    props: {},
+    name: '{{ properCase componentName }}',
     data() {
         return {}
     },
-    created() {},
     mounted() {},
     methods: {}
 }

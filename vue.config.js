@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const spritesmithPlugin = require('webpack-spritesmith')
 const terserPlugin = require('terser-webpack-plugin')
+const CompressionPlugin = require('compression-webpack-plugin')
 const cdnDependencies = require('./dependencies.cdn')
 
 const spritesmithTasks = []
@@ -48,19 +49,31 @@ const cdn = {
     css: cdnDependencies.map(e => e.css).filter(e => e),
     js: cdnDependencies.map(e => e.js).filter(e => e)
 }
+// gzip 相关
+const isGZIP = process.env.VUE_APP_GZIP == 'ON'
 
 module.exports = {
     publicPath: '',
     productionSourceMap: false,
     devServer: {
         open: true,
-        // 开发环境默认开启反向代理，如果不需要请自行注释
-        proxy: {
-            '/': {
-                target: process.env.VUE_APP_API_ROOT,
-                changeOrigin: true
-            }
-        }
+        // proxy: {
+        //     '/': {
+        //         target: process.env.VUE_APP_API_ROOT,
+        //         changeOrigin: true
+        //     }
+        // },
+        // 用于 mock-server
+        // proxy: {
+        //     '/mock': {
+        //         target: '/',
+        //         changeOrigin: true
+        //     },
+        //     '/': {
+        //         target: process.env.VUE_APP_API_ROOT,
+        //         changeOrigin: true
+        //     }
+        // },
     },
     configureWebpack: config => {
         config.resolve.modules = ['node_modules', 'assets/sprites']
@@ -82,11 +95,29 @@ module.exports = {
                 })
             ]
         }
+        if (isGZIP) {
+            return {
+                plugins: [
+                    new CompressionPlugin({
+                        algorithm: 'gzip',
+                        test: /\.(js|css)$/, // 匹配文件名
+                        threshold: 10240, // 对超过10k的数据压缩
+                        deleteOriginalAssets: false, // 不删除源文件
+                        minRatio: 0.8 // 压缩比
+                    })
+                ]
+            }
+        }
     },
     pluginOptions: {
         lintStyleOnBuild: true,
         stylelint: {
             fix: true
+        },
+        mock: {
+            entry: './src/mock/server.js',
+            debug: true,
+            disable: true
         }
     },
     chainWebpack: config => {

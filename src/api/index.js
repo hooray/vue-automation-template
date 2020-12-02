@@ -1,5 +1,5 @@
 import axios from 'axios'
-import qs from 'qs'
+// import Qs from 'qs'
 import router from '@/router/index'
 import store from '@/store/index'
 
@@ -13,7 +13,7 @@ const toLogin = () => {
 }
 
 const api = axios.create({
-    baseURL: process.env.NODE_ENV !== 'development' && process.env.VUE_APP_API_ROOT,
+    baseURL: process.env.VUE_APP_API_ROOT,
     timeout: 10000,
     responseType: 'json'
     // withCredentials: true
@@ -35,7 +35,7 @@ api.interceptors.request.use(
                 if (store.getters['token/isLogin']) {
                     request.data.token = store.state.token.token
                 }
-                request.data = qs.stringify(request.data)
+                // request.data = Qs.stringify(request.data)
             }
         } else {
             // 带上 token
